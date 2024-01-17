@@ -1,0 +1,11 @@
+FROM node:latest
+
+WORKDIR /app
+
+RUN npm install express
+
+RUN npm install mysql2
+
+RUN npm install node-random-name
+
+COPY index.js .

@@ -1,0 +1,60 @@
+version: '3'
+
+services:
+  mysql-container:
+    image: mysql:latest
+    container_name: mysql-container
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=fullcycle
+    networks:
+      - nodenet
+    expose:
+      - 3306
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p$MYSQL_ROOT_PASSWORD", "--protocol", "tcp"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - myvolume:/var/lib/mysql
+      - ./mysql/dump/init.sql:/docker-entrypoint-initdb.d/init.sql
+  
+  node:
+    build: 
+      context: ./node
+      dockerfile: Dockerfile-node
+    image: williamfenu/node-with-express
+    container_name: node
+    command: node index.js
+    networks:
+      - nodenet
+    expose:
+      - 3000
+    depends_on:
+      mysql-container:
+        condition: service_healthy
+
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile-nginx
+    image: williamfenu/nginx
+    container_name: nginx
+    networks:
+      - nodenet
+    ports:
+      - 8000:80
+    depends_on:
+      - node
+        
+volumes:
+  myvolume:
+
+networks:
+  nodenet:
+    driver: bridge
+
+  
+
+

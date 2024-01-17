@@ -1,0 +1,9 @@
+FROM nginx:latest
+
+ENV NGINX_CONFIG_PATH=/etc/nginx/conf.d
+
+RUN unlink $NGINX_CONFIG_PATH/default.conf 
+
+COPY myserver.config $NGINX_CONFIG_PATH
+
+RUN ln -s $NGINX_CONFIG_PATH/myserver.config $NGINX_CONFIG_PATH/default.conf
