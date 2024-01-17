@@ -8,4 +8,6 @@ RUN npm install mysql2
 
 RUN npm install node-random-name
 
-COPY index.js .
+RUN npm install -g nodemon
+
+COPY ./app/index.js ./src/

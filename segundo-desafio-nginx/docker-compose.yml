@@ -26,11 +26,13 @@ services:
       dockerfile: Dockerfile-node
     image: williamfenu/node-with-express
     container_name: node
-    command: node index.js
+    command: nodemon ./src/index.js
     networks:
       - nodenet
     expose:
       - 3000
+    volumes:
+      - ./node/app/:/app/src/
     depends_on:
       mysql-container:
         condition: service_healthy
