@@ -10,4 +10,4 @@ RUN npm install node-random-name
 
 RUN npm install -g nodemon
 
-COPY ./app/index.js ./src/
+COPY ./app/ .

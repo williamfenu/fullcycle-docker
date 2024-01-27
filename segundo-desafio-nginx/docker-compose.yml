@@ -32,7 +32,8 @@ services:
     expose:
       - 3000
     volumes:
-      - ./node/app/:/app/src/
+      - ./node/app/:/app/
+      - /app/node_modules
     depends_on:
       mysql-container:
         condition: service_healthy
